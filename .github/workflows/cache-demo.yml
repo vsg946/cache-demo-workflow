@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
 
       - name: Prime cache cache-654b927
-        id: cache-step
+        id: prime_cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -29,7 +29,7 @@ jobs:
 
       - name: Show cache result
         run: |
-          if [ -n "${{ steps.cache-step.outputs.cache-hit }}" ]; then
+          if [ "${{ steps.prime_cache.outputs.cache-hit }}" == "true" ]; then
             echo "Cache hit!"
           else
             echo "Cache miss!"
