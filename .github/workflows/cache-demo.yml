@@ -1,0 +1,40 @@
+name: Cache Demo Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  cache-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Prime cache cache-654b927
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-654b927
+          restore-keys: |
+            cache-654b927
+
+      - name: Show cache result
+        run: |
+          if [ -n "${{ steps.cache-step.outputs.cache-hit }}" ]; then
+            echo "Cache hit!"
+          else
+            echo "Cache miss!"
+          fi
+
+      - name: Install dependencies
+        run: |
+          pip install requests
