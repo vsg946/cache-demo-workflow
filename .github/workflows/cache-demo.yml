@@ -10,16 +10,19 @@ jobs:
   cache-example:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Prime cache cache-654b927
-        id: prime_cache
+      # Step 3: Cache step with email-like name
+      - name: prime-cache-654b927        # <-- This is the step name shown in UI
+        id: prime_cache                  # <-- ID needed to reference outputs
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -27,7 +30,8 @@ jobs:
           restore-keys: |
             cache-654b927
 
-      - name: Show cache result
+      # Step 4: Echo cache hit/miss
+      - name: Echo cache result
         run: |
           if [ "${{ steps.prime_cache.outputs.cache-hit }}" == "true" ]; then
             echo "Cache hit!"
@@ -35,6 +39,7 @@ jobs:
             echo "Cache miss!"
           fi
 
+      # Step 5: Install dependencies
       - name: Install dependencies
         run: |
           pip install requests
